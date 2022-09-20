@@ -1,0 +1,24 @@
+service: startstop
+
+provider:
+  name: aws
+  runtime: python3.9
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action: 'ec2:*'
+          Resource: '*'
+
+frameworkVersion: '3'
+
+functions:
+  startInstances:
+    handler: src/lambda/start.startInstances
+    events:
+      - schedule: cron(59 6 * * ? *)
+
+  stopInstances:
+    handler: src/lambda/stop.stopInstances
+    events:
+      - schedule: cron(59 19 * * ? *)
